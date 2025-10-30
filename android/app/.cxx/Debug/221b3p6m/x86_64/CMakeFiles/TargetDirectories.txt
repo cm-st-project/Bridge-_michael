@@ -1,0 +1,2 @@
+C:/Users/maris/Desktop/CodingMinds/app_v1_1/android/app/.cxx/Debug/221b3p6m/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/maris/Desktop/CodingMinds/app_v1_1/android/app/.cxx/Debug/221b3p6m/x86_64/CMakeFiles/rebuild_cache.dir
