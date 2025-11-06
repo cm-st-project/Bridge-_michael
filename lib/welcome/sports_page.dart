@@ -13,13 +13,14 @@ class SportPage extends StatefulWidget {
 class _SportPageState extends State<SportPage> {
   final Set<String> selectedSports = {}; // can hold multiple
   final List<Map<String, String>> sports = [
-    {"name": "Basketball", "emoji": "🏀"},
+    // {"name": "Basketball", "emoji": "🏀"},
     {"name": "Soccer", "emoji": "⚽️"},
     {"name": "Golf", "emoji": "⛳️"},
-    {"name": "Tennis", "emoji": "🎾"},
-    {"name": "Track & Field", "emoji": "🏃‍♂️"},
-    {"name": "Baseball", "emoji": "⚾️"},
+    // {"name": "Tennis", "emoji": "🎾"},
+    // {"name": "Track & Field", "emoji": "🏃‍♂️"},
+    // {"name": "Baseball", "emoji": "⚾️"},
     {"name": "Swimming", "emoji": "🏊‍♂️"},
+    {"name": "Other", "emoji": ""}
   ];
 
   @override
@@ -183,7 +184,7 @@ class _SportPageState extends State<SportPage> {
               // Continue Button
               SizedBox(
                 width: double.infinity,
-                height: 64,
+                height: 56,
                 child: ElevatedButton(
                   onPressed: selectedSports.isEmpty ? null : _continue,
                   style: ElevatedButton.styleFrom(

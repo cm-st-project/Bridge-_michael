@@ -42,133 +42,139 @@ class _WelcomePageState extends State<WelcomePage> {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 32, 20, 120),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 32, 20, 30),
           child: Form(
             key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // --- Top Section ---
-                // --- Top Section ---
-                Column(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.vertical -
+                    62, // 32 + 120 padding
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    // --- Top Section ---
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (true)
-                          IconButton(
-                            onPressed: () => Navigator.of(context).maybePop(),
-                            icon:
-                                const Icon(Icons.arrow_back_ios_new, size: 20),
-                            padding: EdgeInsets.only(right: 40),
-                            constraints: const BoxConstraints(),
-                          ),
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(2),
-                            child: LinearProgressIndicator(
-                              value: 0.0,
-                              minHeight: 3,
-                              backgroundColor: fg.withOpacity(.08),
-                              valueColor: AlwaysStoppedAnimation<Color>(fg),
+                        Row(
+                          children: [
+                            if (true)
+                              IconButton(
+                                onPressed: () =>
+                                    Navigator.of(context).maybePop(),
+                                icon: const Icon(Icons.arrow_back_ios_new,
+                                    size: 20),
+                                padding: const EdgeInsets.only(right: 40),
+                                constraints: const BoxConstraints(),
+                              ),
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(2),
+                                child: LinearProgressIndicator(
+                                  value: 0.0,
+                                  minHeight: 3,
+                                  backgroundColor: fg.withOpacity(.08),
+                                  valueColor:
+                                      AlwaysStoppedAnimation<Color>(fg),
+                                ),
+                              ),
                             ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Welcome",
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            fontSize: 42,
+                            fontWeight: FontWeight.w800,
+                            color: fg,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "What is your name?",
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "We’ll personalize your experience. You can change this later in Profile.",
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: Colors.black,
+                            fontSize: 16,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Welcome",
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontSize: 42,
-                        fontWeight: FontWeight.w800,
-                        color: fg,
+                    const SizedBox(height: 5),
+
+                    // --- Middle Input Field ---
+                    TextFormField(
+                      controller: _nameCtrl,
+                      onChanged: (_) => setState(() {}),
+                      decoration: InputDecoration(
+                        hintText: 'Your name',
+                        hintStyle: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 24,
+                          horizontal: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "What is your name?",
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
                       ),
+                      validator: (v) =>
+                          (v == null || v.trim().isEmpty)
+                              ? 'Please enter a name'
+                              : null,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "We’ll personalize your experience. You can change this later in Profile.",
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(
-                            color: Colors.black, 
+                    const SizedBox(height: 35),
+
+                    // --- Bottom Button ---
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: _continue,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.black,
+                          disabledForegroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                        ),
+                        child: const Text(
+                          "Continue",
+                          style: TextStyle(
                             fontSize: 16,
-                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 5,
-                ),
-
-                // --- Middle Input Field ---
-                TextFormField(
-                  controller: _nameCtrl,
-                  onChanged: (_) => setState(() {}),
-                  decoration: InputDecoration(
-                    hintText: 'Your name',
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade600, // ← sets hint text color
-                      fontWeight: FontWeight.w500,
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey.shade200, // lighter background
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 24, // controls height
-                      horizontal: 16,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  validator: (v) => (v == null || v.trim().isEmpty)
-                      ? 'Please enter a name'
-                      : null,
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-
-                // --- Bottom Button ---
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: _continue,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black, // ← button background
-                      foregroundColor: Colors.white, // ← text/icon color
-                      disabledBackgroundColor: Colors.black, // optional
-                      disabledForegroundColor: Colors.white, // optional
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                      ),
-                    ),
-                    child: const Text(
-                      "Continue",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white, // ← ensures white text explicitly
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

@@ -168,7 +168,7 @@ class _AgePageState extends State<AgePage> {
                 // --- Bottom Button ---
                 SizedBox(
                   width: double.infinity,
-                  height: 64,
+                  height: 56,
                   child: ElevatedButton(
                     onPressed: _continue,
                     style: ElevatedButton.styleFrom(
