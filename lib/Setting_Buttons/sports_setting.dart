@@ -11,12 +11,12 @@ class SportsSettingPage extends StatefulWidget {
 class _SportsSettingPageState extends State<SportsSettingPage> {
   final Set<String> selectedSports = {};
   final List<Map<String, String>> sports = [
-    {"name": "Basketball", "emoji": "🏀"},
-    {"name": "Soccer", "emoji": "⚽️"},
+    // {"name": "Basketball", "emoji": "🏀"},
+    // {"name": "Soccer", "emoji": "⚽️"},
     {"name": "Golf", "emoji": "⛳️"},
-    {"name": "Tennis", "emoji": "🎾"},
-    {"name": "Track & Field", "emoji": "🏃‍♂️"},
-    {"name": "Baseball", "emoji": "⚾️"},
+    // {"name": "Tennis", "emoji": "🎾"},
+    // {"name": "Track & Field", "emoji": "🏃‍♂️"},
+    // {"name": "Baseball", "emoji": "⚾️"},
     {"name": "Swimming", "emoji": "🏊‍♂️"},
   ];
 

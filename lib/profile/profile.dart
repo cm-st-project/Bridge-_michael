@@ -131,22 +131,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             ? FileImage(_image!)
                             : AssetImage(_profileImage) as ImageProvider,
                       ),
-                      Positioned(
-                        right: 4,
-                        bottom: 4,
-                        child: GestureDetector(
-                          onTap: _pickImage,
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(Icons.camera_alt_rounded,
-                                color: Colors.white, size: 18),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   right: 4,
+                      //   bottom: 4,
+                      //   child: GestureDetector(
+                      //     onTap: _pickImage,
+                      //     child: Container(
+                      //       padding: const EdgeInsets.all(6),
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.black,
+                      //         shape: BoxShape.circle,
+                      //       ),
+                      //       child: const Icon(Icons.camera_alt_rounded,
+                      //           color: Colors.white, size: 18),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 16),
