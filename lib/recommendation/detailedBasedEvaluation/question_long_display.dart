@@ -270,239 +270,334 @@ Ensure that all responses are concise and only contain the JSON without any addi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: color1,
+        elevation: 1,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
+          'Sports Insight Report',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(5),
-        child: !isLoading
-            ? SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: Colors.black),
+              )
+            : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
-                  children: <Widget>[
-                    // Top row for finalSports and prefSports
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 8),
+
+                    // ─── Top Section ───────────────────────────────
                     if (responsesMap.containsKey('finalSports') &&
                         responsesMap.containsKey('prefSports'))
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: 300,
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Recommended Sports',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                ...responsesMap['finalSports']!
-                                    .map((item) => Text(item))
-                                    .toList(),
-                              ],
+                          Expanded(
+                            child: _buildCard(
+                              title: 'Recommend',
+                              color: Colors.blue.shade50,
+                              items: responsesMap['finalSports']!,
                             ),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: 300,
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Sports that you perferred',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                ...responsesMap['prefSports']!
-                                    .map((item) => Text(item))
-                                    .toList(),
-                              ],
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: _buildCard(
+                              title: 'Preference',
+                              color: Colors.green.shade50,
+                              items: responsesMap['prefSports']!,
                             ),
                           ),
                         ],
                       ),
 
-                    // Second row for radar charts (overallScores and psyCatScores)
+                    const SizedBox(height: 28),
+
+                    // ─── Radar Charts ───────────────────────────────
                     if (responsesMap.containsKey('overallScores') &&
                         responsesMap.containsKey('psyCatScores'))
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.465,
-                            padding: const EdgeInsets.all(0),
-                            height: 280,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Physical Scores',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                SizedBox(
-                                  height: 220,
-                                  child: RadarChart(
-                                    RadarChartData(
-                                      dataSets: [
-                                        RadarDataSet(
-                                          fillColor:
-                                              Colors.green.withOpacity(0.5),
-                                          borderColor: Colors.green,
-                                          entryRadius: 4.0,
-                                          dataEntries:
-                                              responsesMap['overallScores']!
-                                                  .map((score) => RadarEntry(
-                                                      value:
-                                                          double.parse(score)))
-                                                  .toList(),
-                                        ),
-                                      ],
-                                      titleTextStyle: TextStyle(
-                                          fontSize: 8,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      getTitle: (index, angle) {
-                                        // Assuming the order of scores corresponds to the categories
-                                        List<String> categories = [
-                                          'Muscular Strength',
-                                          'Muscular Endurance',
-                                          'Muscular Power',
-                                          'Agility and Speed',
-                                          'Aerobic Capacity',
-                                          'Flexibility',
-                                          'Balance and Stability',
-                                          'Reaction Time'
-                                        ];
-                                        return RadarChartTitle(
-                                            text: categories.length > index
-                                                ? categories[index]
-                                                : '');
-                                      },
-                                    ),
-                                  ),
-                                ),
+                          Expanded(
+                            child: _buildRadarSection(
+                              title: 'Physical Profile',
+                              values: responsesMap['overallScores']!,
+                              categories: [
+                                'Strength',
+                                'Endurance',
+                                'Power',
+                                'Agility',
+                                'Aerobic',
+                                'Flexibility',
+                                'Balance',
+                                'Reaction'
                               ],
+                              color: Colors.teal,
                             ),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.465,
-                            padding: const EdgeInsets.all(0),
-                            height: 280,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Psychological Scores',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue),
-                                ),
-                                SizedBox(height: 8),
-                                SizedBox(
-                                  height: 220,
-                                  child: RadarChart(
-                                    RadarChartData(
-                                      dataSets: [
-                                        RadarDataSet(
-                                          fillColor:
-                                              Colors.blue.withOpacity(0.5),
-                                          borderColor: Colors.blue,
-                                          entryRadius: 4.0,
-                                          dataEntries:
-                                              responsesMap['psyCatScores']!
-                                                  .map((score) => RadarEntry(
-                                                      value:
-                                                          double.parse(score)))
-                                                  .toList(),
-                                        ),
-                                      ],
-                                      titleTextStyle: TextStyle(
-                                          fontSize: 6,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      getTitle: (index, angle) {
-                                        List<String> psyCategories =
-                                            responsesMap['psyCat'] ?? [];
-                                        // return psyCategories.length > index
-                                        //     ? psyCategories[index]
-                                        //     : '';
-                                        return RadarChartTitle(
-                                            text: psyCategories.length > index
-                                                ? psyCategories[index]
-                                                : '');
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: _buildRadarSection(
+                              title: 'Psychological Profile',
+                              values: responsesMap['psyCatScores']!,
+                              categories: responsesMap['psyCat'] ??
+                                  ['Focus', 'Confidence', 'Resilience'],
+                              color: Colors.indigo,
                             ),
                           ),
                         ],
                       ),
 
-                    // Bottom section for other lists (bodySports, conditionSports, psyStrengthSports)
+                    const SizedBox(height: 30),
+
+                    // ─── Additional Lists ─────────────────────────────
                     Wrap(
-                      spacing: 8,
-                      runSpacing: 2,
+                      spacing: 14,
+                      runSpacing: 14,
                       children: [
                         for (String key in responsesMap.keys)
-                          if (key != 'overallScores' &&
-                              key != 'psyCatScores' &&
-                              key != 'psyCat' &&
-                              key != 'finalSports' &&
-                              key != 'prefSports')
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.45,
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    key,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.blue),
-                                  ),
-                                  SizedBox(height: 8),
-                                  ...responsesMap[key]!
-                                      .map((item) => Text(item))
-                                      .toList(),
-                                ],
-                              ),
+                          if (![
+                            'overallScores',
+                            'psyCatScores',
+                            'psyCat',
+                            'finalSports',
+                            'prefSports'
+                          ].contains(key))
+                            _buildMiniListCard(
+                              title: key,
+                              items: responsesMap[key]!,
                             ),
-                        ElevatedButton(
-                          onPressed: _saveResponsesToPreferences,
-                          child: Text('Save Data'),
-                        ),
                       ],
                     ),
+
+                    const SizedBox(height: 40),
+
+                    // ─── Save Button ───────────────────────────────
+                    ElevatedButton.icon(
+                      onPressed: _saveResponsesToPreferences,
+                      icon: const Icon(Icons.save_rounded),
+                      label: const Text(
+                        'Save Data',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: color1,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 15,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        elevation: 3,
+                      ),
+                    ),
+
+                    const SizedBox(height: 60),
                   ],
                 ),
-              )
-            : Center(
-                child: Container(
-                  margin: const EdgeInsets.all(5),
-                  child: const CircularProgressIndicator(),
-                ),
               ),
+      ),
+    );
+  }
+
+// ─── Helper Widgets ───────────────────────────────────────────────
+
+  Widget _buildCard({
+    required String title,
+    required List<String> items,
+    required Color color,
+  }) {
+    return Container(
+      height: 260, // 🔹 fixed height
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var sport in items)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        '• $sport',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRadarSection({
+    required String title,
+    required List<String> values,
+    required List<String> categories,
+    required Color color,
+  }) {
+    List<double> parsed = values.map((e) => double.tryParse(e) ?? 0).toList();
+    while (parsed.length < 3) parsed.add(0);
+    if (parsed.every((v) => v == 0)) parsed = List.generate(8, (_) => 50);
+
+    return Container(
+      height: 280, // 🔹 fixed height for radar box
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: RadarChart(
+              RadarChartData(
+                tickCount: 4,
+                radarBorderData: const BorderSide(color: Colors.grey),
+                gridBorderData:
+                    BorderSide(color: Colors.grey.shade300, width: 0.6),
+                titleTextStyle: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+                getTitle: (i, _) => RadarChartTitle(
+                  text: i < categories.length ? categories[i] : '',
+                ),
+                dataSets: [
+                  RadarDataSet(
+                    fillColor: color.withOpacity(0.3),
+                    borderColor: color,
+                    borderWidth: 2,
+                    entryRadius: 3,
+                    dataEntries:
+                        parsed.map((v) => RadarEntry(value: v)).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMiniListCard({
+    required String title,
+    required List<String> items,
+  }) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.90,
+      height: 220, // 🔹 fixed height for all mini cards
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final item in items)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        '• $item',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black87,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

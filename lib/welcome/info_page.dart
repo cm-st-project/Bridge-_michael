@@ -155,7 +155,7 @@ class _InfoPageState extends State<InfoPage>
               // --- Continue Button ---
               SizedBox(
                 width: double.infinity,
-                height: 64,
+                height: 56,
                 child: ElevatedButton(
                   onPressed: _continue,
                   style: ElevatedButton.styleFrom(
@@ -272,7 +272,7 @@ class _PerformanceGraphPainter extends CustomPainter {
     )..layout();
 
     textPainter1.paint(canvas, Offset(size.width * 0.6, size.height * 0.22));
-    textPainter2.paint(canvas, Offset(size.width * 0.6, size.height * 0.48));
+    textPainter2.paint(canvas, Offset(size.width * 0.6, size.height * 0.46));
 
     final monthStyle = TextStyle(
       color: Colors.black,

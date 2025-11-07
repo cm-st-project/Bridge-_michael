@@ -122,7 +122,7 @@ class _GenderPageState extends State<GenderPage> {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 140),
+              const SizedBox(height: 70),
 
               // Gender Buttons
               genderButton("Male"),
@@ -134,7 +134,7 @@ class _GenderPageState extends State<GenderPage> {
               // Continue Button
               SizedBox(
                 width: double.infinity,
-                height: 64,
+                height: 56,
                 child: ElevatedButton(
                   onPressed: selectedGender == null ? null : _continue,
                   style: ElevatedButton.styleFrom(

@@ -84,7 +84,7 @@ class _SummaryPageState extends State<SummaryPage>
 
     // Save "welcomeCompleted = true"
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('welcomeCompleted', false);
+    await prefs.setBool('welcomeCompleted', true);
 
     await Future.delayed(const Duration(seconds: 2));
 
@@ -272,7 +272,7 @@ class _SummaryPageState extends State<SummaryPage>
               // Continue button
               SizedBox(
                 width: double.infinity,
-                height: 64,
+                height: 56,
                 child: ElevatedButton(
                   onPressed: _finish,
                   style: ElevatedButton.styleFrom(
